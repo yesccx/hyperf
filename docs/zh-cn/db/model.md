@@ -30,6 +30,7 @@ $ php bin/hyperf.php db:model table_name
 |  --table-mapping   | array  |               `[]`                | 为表名 -> 模型增加映射关系 比如 ['users:Account'] |
 |  --ignore-tables   | array  |               `[]`                |        不需要生成模型的表名 比如 ['users']        |
 |  --with-comments   |  bool  |              `false`              |                 是否增加字段注释                  |
+|  --with-ide        |  bool  |              `false`              |               生成对应的`IDE`文件             |
 |  --property-case   |  int   |                `0`                |              字段类型 0 蛇形 1 驼峰               |
 
 当使用 `--property-case` 将字段类型转化为驼峰时，还需要手动在模型中加入 `Hyperf\Database\Model\Concerns\CamelCase`。
@@ -181,7 +182,7 @@ class User extends Model
 }
 ```
 
-如果您需要不希望保持 `datetime` 格式的储存，或者希望对时间做进一步的处理，您可以通过在模型内重写 `fromDateTime($value)` 方法实现。   
+如果您需要不希望保持 `datetime` 格式的储存，或者希望对时间做进一步的处理，您可以通过在模型内重写 `fromDateTime($value)` 方法实现。
 
 如果你需要自定义存储时间戳的字段名，可以在模型中设置 `CREATED_AT` 和 `UPDATED_AT` 常量的值来实现，其中一个为 `null`，则表明不希望 ORM 处理该字段：
 
@@ -322,7 +323,7 @@ $users = User::query()->find([1, 2, 3]);
 
 ### 『未找到』异常
 
-有时你希望在未找到模型时抛出异常，这在控制器和路由中非常有用。    
+有时你希望在未找到模型时抛出异常，这在控制器和路由中非常有用。
 `findOrFail` 和 `firstOrFail` 方法会检索查询的第一个结果，如果未找到，将抛出 `Hyperf\Database\Model\ModelNotFoundException` 异常：
 
 ```php
@@ -499,7 +500,7 @@ $user->delete();
 use App\Model\User;
 
 // 注意使用 delete 方法时必须建立在某些查询条件基础之上才能安全删除数据，不存在 where 条件，会导致删除整个数据表
-User::query()->where('gender', 1)->delete(); 
+User::query()->where('gender', 1)->delete();
 ```
 
 ### 通过主键直接删除数据
